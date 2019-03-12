@@ -1,0 +1,254 @@
+﻿@using JakeRenzo.Calander.Web.Infrastructures.Models;
+@model JakeRenzo.Calander.Web.Areas.Manage.ViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Admin Index</h2>
+
+
+<!--
+<div class="container">
+    <div class="row row-striped">
+        <div class="col-2 text-right">
+            <h1 class="display-4"><span class="badge badge-secondary">23</span></h1>
+            <h2>OCT</h2>
+        </div>
+        <div class="col-10">
+            <h3 class="text-uppercase"><strong>Ice Cream Social</strong></h3>
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Monday</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 12:30 PM - 2:00 PM</li>
+                <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Cafe</li>
+            </ul>
+            <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+    <div class="row row-striped">
+        <div class="col-2 text-right">
+            <h1 class="display-4"><span class="badge badge-secondary">27</span></h1>
+            <h2>OCT</h2>
+        </div>
+        <div class="col-10">
+            <h3 class="text-uppercase"><strong>Operations Meeting</strong></h3>
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Friday</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 2:30 PM - 4:00 PM</li>
+                <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Room 4019</li>
+            </ul>
+            <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+</div>
+
+    -->
+
+
+
+<a href="~/manage/schoolevents/create"><button type="button" class="btn btn-flat btn-primary">Create<i class="icon-1x icon-plus-sign"></i></button></a>
+
+<div class="container">
+    <div class="row row-striped">
+        <div class="row">
+            <div class="span12">
+
+                <form class="form-search">
+                    <input placeholder="Type Something.." value="@Model.SchoolEvents.Keyword" type="text" class="input-medium search-query " />
+                    <button type="submit" class="btn btn-flat btn-primary">Search</button>
+                </form>
+
+                @{
+                    if (Model.SchoolEvents != null)
+                    {
+                        if (Model.SchoolEvents.Items.Count > 0)
+                        {
+                            foreach (SchoolEvent schoolevent in Model.SchoolEvents.Items)
+                            {
+
+
+                                <div class="col-2">
+                                    <h1 class="display-4"><span class="badge badge-secondary">23</span></h1>
+                                    <h2>OCT</h2>
+                                </div>
+                                <div class="col-10">
+                                    <h3 class="text-uppercase"><strong>@schoolevent.Title</strong></h3>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Monday</li>
+                                        <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> @schoolevent.EventStart - @schoolevent.EventEnd</li>
+                                        <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Cafe</li>
+                                    </ul>
+                                    <p>@schoolevent.Description</p>
+
+                                    <div class="widget">
+                                        <h4></h4>
+                                        <ul class="social-links">
+                                            <li><a href="~/manage/schoolevents/update-title/@schoolevent.Id" title="Update Title"><i class="icon-rounded icon-32 icon-file"></i></a></li>
+                                            <li><a href="~/manage/schoolevents/update-thumbnail/@schoolevent.Id" title="Update Thumbnail"><i class="icon-rounded icon-32 icon-picture"></i></a></li>
+                                            <li><a href="~/manage/schoolevents/update-banner/@schoolevent.Id" title="Update Banner"><i class="icon-rounded icon-32 icon-picture"></i></a></li>
+                                            <li><a href="~/manage/schoolevents/update-content/@schoolevent.Id" title="Update Content"><i class="icon-rounded icon-32 icon-file-alt"></i></a></li>
+
+                                            <li>
+                                                <a href="#" onclick="confirmDeleteFaq('@schoolevent.Id', '@schoolevent.Title,@schoolevent.Description,@schoolevent.Content')" title="Delete Event"><i class="icon-rounded icon-32 icon-trash"></i></a>
+                                            </li>
+                                            @{
+                                                if (schoolevent.IsPublished)
+                                                {
+                                                    <li><a href="#" title="Unpublish" onclick="confirmUnpublish('@schoolevent.Id','@schoolevent.Title')"><i class="icon-rounded icon-32 icon-remove"></i></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a href="#" title="Publish" onclick="confirmPublish('@schoolevent.Id','@schoolevent.Title')"><i class="icon-rounded icon-32 icon-check"></i></a></li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                                <!-- end article 1 -->
+                            }
+                            <div class="pagination">
+                                <ul>
+                                    <li class="page-item"><a class="page-link" href="~/manage/schoolevents?pageIndex=1">First</a></li>
+                                    @{ if (Model.SchoolEvents.PageIndex > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="~/manage/schoolevents?pageIndex=@(Model.SchoolEvents.PageIndex - 1)">@(Model.SchoolEvents.PageIndex - 1)</a></li>
+                                        }
+                                    }
+                                    <li class="page-item"><a class="page-link active" href="#">@(Model.SchoolEvents.PageIndex)</a></li>
+                                    @{ if ((Model.SchoolEvents.PageIndex + 1) <= Model.SchoolEvents.PageCount)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="~/manage/schoolevents?pageIndex=@(Model.SchoolEvents.PageIndex + 1)">@(Model.SchoolEvents.PageIndex + 1)</a></li>
+                                        }
+                                    }
+                                    <li class="page-item"><a class="page-link" href="~/manage/schoolevents?pageIndex=@Model.SchoolEvents.PageCount">Last</a></li>
+                                </ul>
+                            </div>
+
+                        }
+                    }
+                }
+
+
+
+            </div>
+            <div class="span4">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--MODAL UNPUBLISH-->
+<div class="modal hide fade" id="modal-unpublish">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Unpublish Alumni Post</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to unpublish <span id="modal-unpublish-title"></span>?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="modal-unpublish-button">Yes</button>
+        <button type="button" class="btn" data-dismiss="modal">No</button>
+    </div>
+</div>
+
+
+<!--MODAL PUBLISH-->
+<div class="modal hide fade " id="modal-publish">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Publish Alumni Post</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to publish <span id="modal-publish-title"></span>?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="modal-publish-button">Yes</button>
+        <button type="button" class="btn" data-dismiss="modal">No</button>
+    </div>
+</div>
+
+
+
+@section pageStyles{
+    <!--
+    .row-striped:nth-of-type(odd){
+    background-color: #efefef;
+    border-left: 4px #000000 solid;
+    }
+
+    .row-striped:nth-of-type(even){
+    background-color: #ffffff;
+    border-left: 4px #efefef solid;
+    }
+
+    .row-striped {
+    padding: 15px 0;
+    }-->
+
+}
+
+
+
+@section pageScripts{
+    <script>
+        //////////////////////SEARCH/////////////////////////////////////////////////////////////////
+        function searchTrigger() {
+            window.location = "/manage/schoolevents?pageIndex=1&keyword=" + $("#searchKeyword").val();
+
+        }
+        $("#searchKeyword").keyup(function (event) {
+            if (event.keyCode === 13) {
+                searchTrigger();
+            }
+        });
+        ////////////////////UNPUBLISH/////////////////////////////////////////////////////////////////
+        function confirmUnpublish(id, title) {
+            $("#modal-unpublish-title").html(title);
+            $("#modal-unpublish-button").attr("onclick", "UnpublishSchoolEvents('" + id + "')");
+            $("#modal-unpublish").modal("show");
+        }
+        function UnpublishSchoolEvents(id) {
+            $.ajax({
+                type: "POST",
+                url: "/manage/schoolevents/unpublish",
+                data: { id: id },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr) {
+                    var response = JSON.parse(xhr.responseText);
+                    alert("Error Occured : " + response.errors[0]);
+                    location.reload();
+                }
+            });
+        }
+
+        //////////////////PUBLISH///////////////////////////////////////////////////////////////////////
+        function confirmPublish(id, title) {
+            $("#modal-publish-title").html(title);
+            $("#modal-publish-button").attr("onclick", "PublishSchoolEvents('" + id + "')");
+            $("#modal-publish").modal("show");
+        }
+        function PublishAlumniProfile(id) {
+            $.ajax({
+                type: "POST",
+                url: "/manage/schoolevents/publish",
+                data: { id: id },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr) {
+                    var response = JSON.parse(xhr.responseText);
+                    alert("Error Occured : " + response.errors[0]);
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}

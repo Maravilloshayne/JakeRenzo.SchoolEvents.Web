@@ -1,0 +1,25 @@
+﻿@model JakeRenzo.Calander.Web.ViewModels.SchoolEvent.SchoolEventViewModel
+@using JakeRenzo.Calander.Web.Infrastructures.Models
+@{
+    ViewData["Title"] = "SchoolEvent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SchoolEvent</h2>
+
+<div class="col-2 ">
+    <h1 class="display-4"><span class="badge badge-secondary">23</span></h1>
+    <h2>@Model.PostExpiry.ToString(" MMMM ")</h2>
+</div>
+<div class="col-10">
+    <h3 class="text-uppercase"><strong>@Model.Title</strong></h3>
+    <ul class="list-inline">
+        <li class="list-inline-item"><i class="icon icon-calendar" aria-hidden="true"></i>@Model.PostExpiry.ToString("dddd")</li>
+        <li class="list-inline-item"><i class="icon icon-time" aria-hidden="true"></i> Start: @Model.EventStart.ToString("hh:mm tt") - End : @Model.EventEnd.ToString("hh:mm tt")</li>
+        <li class="list-inline-item"><i class="icon icon-home" aria-hidden="true"></i> Cafe</li>
+    </ul>
+    <p>@Html.Raw(Model.Content)</p>
+
+
+
+</div>
